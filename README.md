@@ -22,11 +22,11 @@ This is the current version of the report of this project. It contains documenta
 
 This folder contains the Jupyter notebooks that include the code used in this project with its results. 
 
-* `Data Preparation and Exploration.ipynb` notebook contains code used in chapter 4 of the project for data exploration and preparation.
+* `Data Preparation and Exploration.ipynb` notebook contains code used in chapter 4 of the project for data exploration and preparation. You can view the notebook on Google Colab on [this link](https://colab.research.google.com/github/ammar1y/Data-Science-Research-Project/blob/master/Code%20Notebooks/Data%20Preparation%20and%20Exploration.ipynb).
 
-* `Modeling 1 - Model Selection.ipynb` notebook contains code used in chapter 5 for feature selection, feature engineering, model selection, and hyperparameter optimization.
+* `Modeling 1 - Model Selection.ipynb` notebook contains code used in chapter 5 for feature selection, feature engineering, model selection, and hyperparameter optimization. You can view the notebook on Google Colab on [this link](https://colab.research.google.com/github/ammar1y/Data-Science-Research-Project/blob/master/Code%20Notebooks/Modeling%201%20-%20Model%20Selection.ipynb).
 
-* `Modeling 2 - Final Model Building.ipynb` notebook contains code used in chapter 5 for building the final ensemble model and  training and testing the final model.
+* `Modeling 2 - Final Model Building.ipynb` notebook contains code used in chapter 5 for building the final ensemble model and  training and testing the final model. You can view the notebook on Google Colab on [this link](https://colab.research.google.com/github/ammar1y/Data-Science-Research-Project/blob/master/Code%20Notebooks/Modeling%202%20-%20Final%20Model%20Building.ipynb).
 
 The data files used by these notebooks are included in the `Code Notebooks` folder. But due to the large size of some files, it wasn't possible to upload them to Github. So we included a small sample of them in this repository. To run the code that use those files, you need to get the complete files. Below is a list of those large files and the links to download them from Googel Cloud Storage:
 
