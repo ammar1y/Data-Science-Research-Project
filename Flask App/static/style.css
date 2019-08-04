@@ -1,0 +1,134 @@
+body {
+    background: #9AC6DF;
+    font-family: 'Roboto';
+    padding: 1.5em 7em;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Roboto';
+    transition: all 0.5s;
+}
+
+#container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+#left {
+    width: 60%;
+}
+
+#left #form_container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#left #form_container .form_grp {
+    margin-left: 16px;
+    margin-right: 16px;
+    margin-bottom: 16px;
+}
+
+#left #form_container #pd_loc {
+    width: 50%;
+    order: 1;
+}
+
+#left #form_container #tr_data {
+    width: 25%;
+    order: 2;
+}
+
+#left #form_container #p_dt {
+    width: 50%;
+    order: 3;
+}
+
+#left #form_container #wthr_data {
+    width: 40%;
+    order: 4;
+}
+
+#right {
+    width: 30%;
+    padding-top: 16px;
+}
+
+#right p {
+    line-height: 1.5;
+    font-size: 1.4em;
+    font-family: Bellefair;
+    /*font-style: italic;*/
+}
+
+#title {
+    text-align: left;
+}
+
+#tripdata_form label {
+    display: block;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+#tripdata_form input[type="number"], #tripdata_form input[type="text"] {
+    width: 14em;
+    padding: 0.5em;
+    border-radius: 3px;
+}
+
+#tripdata_form #p_dt input[type="number"], #tripdata_form input[type="text"] {
+    width: 20em;
+}
+
+#tripdata_form #p_month {
+    background-color: lightgray;
+}
+
+#submit-cont {
+    /*text-align: center;*/
+}
+
+#hr-p {
+    color: gray;
+
+}
+
+#pred-display {
+    padding: 0 12px;
+}
+#pred-display span {
+    background: #F6D27C;
+    color: #202239;
+    font-family: Bellefair;
+    font-size: 1.5em;
+    font-weight: normal;
+}
+
+#tripdata_form input[type="submit"] {
+    width: 10em;
+    padding: 0.5em 0.1em;
+    border: 0;
+    background: black;
+    color: white;
+    box-shadow: none;
+    margin-top: 1em;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+#tripdata_form input[type="submit"]:hover {
+    background: gold;
+    color: black;
+}
+
+.select2-menu {
+    min-width: 100px;
+}
+
+#pd_loc .select2-menu {
+    width: 300px;
+}

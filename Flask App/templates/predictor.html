@@ -1,0 +1,180 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Bellefair|Roboto:400,700&display=swap" rel="stylesheet">
+    <title>Taxi-Trip Duration Predictor</title>
+</head>
+<body>
+
+<h1 id="title">Taxi-Trip Duration Predictor</h1>
+<div id="container">
+    <div id="left">
+        {% if pred %}
+        <h2 id="pred-display"><span>&nbsp;{{ pred }}&nbsp;</span></h2>
+        {% endif %}
+
+        <form action="{{ url_for('predictor') }}" method="POST" id="tripdata_form">
+            <div id="form_container">
+                <div class="form_grp" id="pd_loc">
+                    <h2>Pickup and Drop-off Locations</h2>
+                    <label for="p_zone">Pickup Zone:</label>
+                    <select class="select2-menu" name="p_zone" id="p_zone">
+                    </select>
+                    <label for="d_zone">Drop-off Zone:</label>
+                    <select class="select2-menu" name="d_zone" id="d_zone">
+                    </select>
+                </div>
+
+                <div class="form_grp" id="p_dt">
+                    <h2>Pickup Time</h2>
+                    <label for="p_day_of_month">Pickup Day of Month:</label>
+                    <select class="select2-menu" name="p_day_of_month" id="p_day_of_month">
+                        <option value="1">1</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select><br>
+                    <!--<label for="p_day_name">Pickup Day Name:</label>-->
+                    <!--<input type="text" name="p_day_name" id="p_day_name"><br>-->
+                    <label for="p_month">Pickup Month:</label>
+                    <input type="text" disabled name="p_month" id="p_month" value="March"><br>
+                    <label for="p_hour">Pickup Hour:</label>
+                    <input type="number" min="13" max="23" name="p_hour" id="p_hour"
+                           placeholder="Between 13 (1 p.m.) and 23 (11 p.m.)"><br>
+                </div>
+
+                <div class="form_grp" id="tr_data">
+                    <h2>Trip Data</h2>
+                    <label for="vendorid">Vendor:</label>
+                    <select class="select2-menu" name="vendorid" id="vendorid">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select><br>
+                    <label for="passenger_count">Number of Passengers:</label>
+                    <input type="number" min="1" max="9" name="passenger_count" id="passenger_count"><br>
+                </div>
+
+                <div class="form_grp" id="wthr_data">
+                    <h2>Weather Data</h2>
+                    <label for="avg_temp">Temperature (C):</label>
+                    <input type="number" name="avg_temp" id="avg_temp"><br>
+                    <label for="precipitation">Precipitation (cm):</label>
+                    <input type="number" name="precipitation" id="precipitation"><br>
+                    <label for="new_snow">New Snow (cm):</label>
+                    <input type="number" name="new_snow" id="new_snow"><br>
+                    <label for="snow_depth">Snow Depth (cm):</label>
+                    <input type="number" name="snow_depth" id="snow_depth"><br>
+                </div>
+            </div>
+            <p id="hr-p">———————————————————————————————————————————————————————</p>
+            <div id="submit-cont"><input type="submit" value="Predict Duration"></div>
+
+        </form>
+    </div>
+    <div id="right">
+        <p>
+            This application predicts taxi-trip duration in New York City given a few data about the
+            trip. Please fill in the fields on the left side of this page and then click on the Submit
+            button to get the prediction. Prediction is performed using an ensemble of machine-learning models.
+
+            <br><br>
+
+            This application is a part of the research project of Master-of-Data-Science program at University
+            of Malaya in Malaysia by Ammar Alyousfi under the supervision of Dr. Salimah Mokhtar in 2019.
+            To read the project report and understand all about the prediction process, please
+            click <a href="https://github.com/ammar1y/Data-Science-Research-Project">here</a>.
+
+            <br><br>
+
+            You can get weather data from many websites on the internet.
+        </p>
+    </div>
+</div>
+
+<script>
+    zone_names = ['Newark Airport', 'Jamaica Bay', 'Allerton/Pelham Gardens', 'Alphabet City', 'Arden Heights', 'Arrochar/Fort Wadsworth',
+        'Astoria', 'Astoria Park', 'Auburndale', 'Baisley Park', 'Bath Beach', 'Battery Park', 'Battery Park City', 'Bay Ridge',
+        'Bay Terrace/Fort Totten', 'Bayside', 'Bedford', 'Bedford Park', 'Bellerose', 'Belmont', 'Bensonhurst East', 'Bensonhurst West',
+        'Bloomfield/Emerson Hill', 'Bloomingdale', 'Boerum Hill', 'Borough Park', 'Breezy Point/Fort Tilden/Riis Beach',
+        'Briarwood/Jamaica Hills', 'Brighton Beach', 'Broad Channel', 'Bronx Park', 'Bronxdale', 'Brooklyn Heights', 'Brooklyn Navy Yard',
+        'Brownsville', 'Bushwick North', 'Bushwick South', 'Cambria Heights', 'Canarsie', 'Carroll Gardens', 'Central Harlem',
+        'Central Harlem North', 'Central Park', 'Charleston/Tottenville', 'Chinatown', 'City Island', 'Claremont/Bathgate',
+        'Clinton East', 'Clinton Hill', 'Clinton West', 'Co-Op City', 'Cobble Hill', 'College Point', 'Columbia Street',
+        'Coney Island', 'Corona', 'Corona', 'Country Club', 'Crotona Park', 'Crotona Park East', 'Crown Heights North',
+        'Crown Heights South', 'Cypress Hills', 'Douglaston', 'Downtown Brooklyn/MetroTech', 'DUMBO/Vinegar Hill', 'Dyker Heights',
+        'East Chelsea', 'East Concourse/Concourse Village', 'East Elmhurst', 'East Flatbush/Farragut', 'East Flatbush/Remsen Village',
+        'East Flushing', 'East Harlem North', 'East Harlem South', 'East New York', 'East New York/Pennsylvania Avenue', 'East Tremont',
+        'East Village', 'East Williamsburg', 'Eastchester', 'Elmhurst', 'Elmhurst/Maspeth', "Eltingville/Annadale/Prince's Bay",
+        'Erasmus', 'Far Rockaway', 'Financial District North', 'Financial District South', 'Flatbush/Ditmas Park', 'Flatiron',
+        'Flatlands', 'Flushing', 'Flushing Meadows-Corona Park', 'Fordham South', 'Forest Hills', 'Forest Park/Highland Park',
+        'Fort Greene', 'Fresh Meadows', 'Freshkills Park', 'Garment District', 'Glen Oaks', 'Glendale',
+        "Governor's Island/Ellis Island/Liberty Island", "Governor's Island/Ellis Island/Liberty Island",
+        "Governor's Island/Ellis Island/Liberty Island", 'Gowanus', 'Gramercy', 'Gravesend', 'Great Kills', 'Great Kills Park',
+        'Green-Wood Cemetery', 'Greenpoint', 'Greenwich Village North', 'Greenwich Village South', 'Grymes Hill/Clifton',
+        'Hamilton Heights', 'Hammels/Arverne', 'Heartland Village/Todt Hill', 'Highbridge', 'Highbridge Park', 'Hillcrest/Pomonok',
+        'Hollis', 'Homecrest', 'Howard Beach', 'Hudson Sq', 'Hunts Point', 'Inwood', 'Inwood Hill Park', 'Jackson Heights', 'Jamaica',
+        'Jamaica Estates', 'JFK Airport', 'Kensington', 'Kew Gardens', 'Kew Gardens Hills', 'Kingsbridge Heights', 'Kips Bay',
+        'LaGuardia Airport', 'Laurelton', 'Lenox Hill East', 'Lenox Hill West', 'Lincoln Square East', 'Lincoln Square West',
+        'Little Italy/NoLiTa', 'Long Island City/Hunters Point', 'Long Island City/Queens Plaza', 'Longwood', 'Lower East Side',
+        'Madison', 'Manhattan Beach', 'Manhattan Valley', 'Manhattanville', 'Marble Hill', 'Marine Park/Floyd Bennett Field',
+        'Marine Park/Mill Basin', 'Mariners Harbor', 'Maspeth', 'Meatpacking/West Village West', 'Melrose South', 'Middle Village',
+        'Midtown Center', 'Midtown East', 'Midtown North', 'Midtown South', 'Midwood', 'Morningside Heights', 'Morrisania/Melrose',
+        'Mott Haven/Port Morris', 'Mount Hope', 'Murray Hill', 'Murray Hill-Queens', 'New Dorp/Midland Beach', 'North Corona', 'Norwood',
+        'Oakland Gardens', 'Oakwood', 'Ocean Hill', 'Ocean Parkway South', 'Old Astoria', 'Ozone Park', 'Park Slope', 'Parkchester',
+        'Pelham Bay', 'Pelham Bay Park', 'Pelham Parkway', 'Penn Station/Madison Sq West', 'Port Richmond', 'Prospect-Lefferts Gardens',
+        'Prospect Heights', 'Prospect Park', 'Queens Village', 'Queensboro Hill', 'Queensbridge/Ravenswood', 'Randalls Island', 'Red Hook',
+        'Rego Park', 'Richmond Hill', 'Ridgewood', 'Rikers Island', 'Riverdale/North Riverdale/Fieldston', 'Rockaway Park',
+        'Roosevelt Island', 'Rosedale', 'Rossville/Woodrow', 'Saint Albans', 'Saint George/New Brighton', 'Saint Michaels Cemetery/Woodside',
+        'Schuylerville/Edgewater Park', 'Seaport', 'Sheepshead Bay', 'SoHo', 'Soundview/Bruckner', 'Soundview/Castle Hill',
+        'South Beach/Dongan Hills', 'South Jamaica', 'South Ozone Park', 'South Williamsburg', 'Springfield Gardens North',
+        'Springfield Gardens South', 'Spuyten Duyvil/Kingsbridge', 'Stapleton', 'Starrett City', 'Steinway',
+        'Stuy Town/Peter Cooper Village', 'Stuyvesant Heights', 'Sunnyside', 'Sunset Park East', 'Sunset Park West',
+        'Sutton Place/Turtle Bay North', 'Times Sq/Theatre District', 'TriBeCa/Civic Center', 'Two Bridges/Seward Park',
+        'UN/Turtle Bay South', 'Union Sq', 'University Heights/Morris Heights', 'Upper East Side North', 'Upper East Side South',
+        'Upper West Side North', 'Upper West Side South', 'Van Cortlandt Park', 'Van Cortlandt Village', 'Van Nest/Morris Park',
+        'Washington Heights North', 'Washington Heights South', 'West Brighton', 'West Chelsea/Hudson Yards', 'West Concourse',
+        'West Farms/Bronx River', 'West Village', 'Westchester Village/Unionport', 'Westerleigh', 'Whitestone', 'Willets Point',
+        'Williamsbridge/Olinville', 'Williamsburg (North Side)', 'Williamsburg (South Side)', 'Windsor Terrace', 'Woodhaven',
+        'Woodlawn/Wakefield', 'Woodside', 'World Trade Center', 'Yorkville East', 'Yorkville West']
+
+    zone_nums = []
+    for (var i = 1; i < 264; i = i + 1) {
+        zone_nums.push(i)
+    }
+
+    pu_allowed_zones = [1, 3, 4, 6, 7, 8, 9, 10, 12, 13, 14, 17, 18, 19, 20, 21, 22, 24, 25, 26, 28, 29, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 45, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 60, 61, 62, 63, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 85, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 100, 101, 102, 106, 107, 108, 112, 113, 114, 116, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 151, 152, 153, 155, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 177, 178, 179, 180, 181, 182, 185, 186, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 200, 201, 202, 203, 205, 207, 208, 209, 210, 211, 212, 213, 215, 216, 217, 218, 219, 220, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 246, 247, 248, 249, 250, 251, 252, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263, 183, 222, 139, 46, 154, 117, 110, 15, 11, 105, 206, 16]
+    do_allowed_zones = [1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 100, 101, 102, 106, 107, 108, 109, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263]
+
+    var p_zone_select = document.getElementById('p_zone');
+    var d_zone_select = document.getElementById('d_zone');
+
+    for (var i = 0; i < 263; i = i + 1) {
+        if (pu_allowed_zones.includes(zone_nums[i])) {
+            var node = document.createElement("option");
+            node.setAttribute("val", zone_nums[i]);
+            var textnode = document.createTextNode(String(zone_nums[i]) + ': ' + zone_names[i]);
+            node.appendChild(textnode);
+            p_zone_select.appendChild(node);
+        }
+
+        if (do_allowed_zones.includes(zone_nums[i])) {
+            node = document.createElement("option");
+            node.setAttribute("val", zone_nums[i]);
+            textnode = document.createTextNode(String(zone_nums[i]) + ': ' + zone_names[i]);
+            node.appendChild(textnode);
+            d_zone_select.appendChild(node);
+        }
+    }
+
+    $(document).ready(function () {
+        $('.select2-menu').select2();
+    });
+</script>
+</body>
+</html>
