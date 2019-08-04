@@ -47,3 +47,7 @@ This folder contains the files of the Flask web application which was built to d
 ## "Taxi-trips meta files" Folder
 
 This folder contains some files related to the taxi-trips datasets such as data dictionary file and map files.
+
+# License
+
+The code used to implement this project is licensed under MIT open-source license.
