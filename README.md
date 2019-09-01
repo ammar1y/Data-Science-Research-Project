@@ -36,7 +36,7 @@ The data files used by these notebooks are included in the `Code Notebooks` fold
 
 * `./NYC_taxi_data/yellow_tripdata_2017-03.csv`. To download the complete version of this file, [click here](https://storage.googleapis.com/research_project_um/yellow_tripdata_2017-03.csv). This file was downloaded originally from NYC Taxi and Limousine Commission website. It is used by `Data Preparation and Exploration.ipynb` notebook.
 
-* * `./NYC_taxi_data/yellow_tripdata_2018-03.csv`. To download the complete version of this file, [click here](https://storage.googleapis.com/research_project_um/yellow_tripdata_2018-03.csv). This file was downloaded originally from NYC Taxi and Limousine Commission website. It is used by `Data Preparation and Exploration.ipynb` notebook.
+* `./NYC_taxi_data/yellow_tripdata_2018-03.csv`. To download the complete version of this file, [click here](https://storage.googleapis.com/research_project_um/yellow_tripdata_2018-03.csv). This file was downloaded originally from NYC Taxi and Limousine Commission website. It is used by `Data Preparation and Exploration.ipynb` notebook.
 
 Note: when running the notebooks, you might need to change some of the file paths inside of them to refer to paths on your machine.
 
